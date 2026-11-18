@@ -78,9 +78,9 @@ Without Internet access: on another PC with the same Python version run `python 
 Ask the administrator for: host, port, a dedicated user, and write permission on the destination folders.
 
 1. Create a key with **no passphrase** (the script cannot type one):
-   `ssh-keygen -t ed25519 -f C:\Users\gpeso\.ssh\id_ed25519`
+   `ssh-keygen -t ed25519 -f C:\Users\user\.ssh\id_ed25519`
 2. Give the `.pub` file to the administrator, who appends it to `~/.ssh/authorized_keys` of that user. Keep the private key on this PC only.
-3. Test the connection by hand: `sftp -i C:\Users\gpeso\.ssh\id_ed25519 user@host`. If this fails, the script will fail too.
+3. Test the connection by hand: `sftp -i C:\Users\user\.ssh\id_ed25519 user@host`. If this fails, the script will fail too.
 
 A password can be used instead of a key (`password` in `config.ini`), but then anyone who can read the file can read the password.
 
@@ -137,7 +137,7 @@ The section name must start with `job`; the rest is free (`[job sessions]`, `[jo
 host = centralsite.mycompany.com
 port = 22
 user = transfer
-key_file = C:\Users\gpeso\.ssh\id_ed25519
+key_file = C:\Users\user\.ssh\id_ed25519
 password =
 
 [general]
@@ -186,13 +186,13 @@ On the first run **everything** already in the local folders is sent: move old f
 
 ## 7. Scheduled task: one task, started at logon, no window
 
-The task starts **once**, 30 seconds after the logon of user `gpeso`, runs as `gpeso` (no password, no administrator rights) and runs `pythonw.exe sftp_push.py`, so no console window appears. The script then keeps running by itself (`interval_seconds` above 0).
+The task starts **once**, 30 seconds after the logon of the `user` account, runs as `user` (no password, no administrator rights) and runs `pythonw.exe sftp_push.py`, so no console window appears. The script then keeps running by itself (`interval_seconds` above 0).
 
 ### Automatic
 
 1. Open `install_task.ps1` with Notepad and set `$Pythonw` to the real path of `pythonw.exe` (for example `C:\Python312\pythonw.exe`). Check `$TaskUser` and `$DelaySeconds`.
 2. Check that `interval_seconds` in `config.ini` is above 0.
-3. Run `install_task.bat`: double-click if you are logged on as `gpeso`, otherwise from a Command Prompt opened as Administrator. Running it again updates the task.
+3. Run `install_task.bat`: double-click if you are logged on as `user`, otherwise from a Command Prompt opened as Administrator. Running it again updates the task.
 4. To remove the task: `install_task.bat remove`.
 
 The task has no 72-hour limit, never starts a second instance of itself, and is restarted up to 3 times (1 minute apart) if the process stops.
@@ -202,7 +202,7 @@ The task has no 72-hour limit, never starts a second instance of itself, and is 
 | Tab | Setting |
 | --- | --- |
 | General | Name `SessionAdapter to CentralSite`; **Run only when user is logged on**. |
-| Triggers | New: **At log on**, **Specific user** `gpeso`, **Delay task for** 30 seconds. |
+| Triggers | New: **At log on**, **Specific user** `user`, **Delay task for** 30 seconds. |
 | Actions | Start a program: `C:\PythonXX\pythonw.exe`; Add arguments `X:\Script\sftp_push.py`; Start in `X:\Script`. |
 | Settings | Untick **Stop the task if it runs longer than 3 days**; if the task is already running: **Do not start a new instance**. |
 

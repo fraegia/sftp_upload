@@ -4,7 +4,7 @@
 #        install_task.bat remove    -> delete the task
 
 $TaskName     = 'SessionAdapter to CentralSite'
-$TaskUser     = 'gpeso'
+$TaskUser     = 'user'
 $Pythonw      = 'C:\PythonXX\pythonw.exe'   # <-- set the real path of your pythonw.exe
 $DelaySeconds = 30                          # wait after logon (network and SessionAdapter get time to start)
 

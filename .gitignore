@@ -1,0 +1,7 @@
+state.txt
+state.txt.tmp
+known_hosts
+log/
+config.ini
+*.part
+__pycache__/
